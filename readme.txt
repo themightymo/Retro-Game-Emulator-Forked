@@ -1,4 +1,4 @@
-=== Retro Game Emulator ===
+=== Retro Game Emulator Forked by Toby on Sept. 29, 2026 ===
 Contributors: grimmdude
 Tags: nintendo, nes, emulator, game, retro
 Requires at least: 3.5
