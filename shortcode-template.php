@@ -17,6 +17,7 @@
             <button type="button" class="rge-upload retro-game-upload-roms"><?php esc_html_e('+ Upload ROMs'); ?></button>
         <?php endif; ?>
     </div>
+    <div class="rge-player">
     <div class="rge-screen">
         <div class="rge-empty">
             <svg width="72" height="52" viewBox="0 0 72 52" fill="none" aria-hidden="true"><rect x="3" y="7" width="66" height="38" rx="12" stroke="currentColor" stroke-width="3"/><path d="M22 17v18M13 26h18" stroke="currentColor" stroke-width="4"/><circle cx="49" cy="29" r="4" fill="currentColor"/><circle cx="59" cy="21" r="4" fill="currentColor"/></svg>
@@ -25,6 +26,22 @@
             <span class="rge-screen-note"><?php esc_html_e('A keyboard is your controller'); ?></span>
         </div>
         <canvas id="retro-game-emulator-canvas" width="256" height="240" tabindex="0" aria-label="<?php esc_attr_e('Game screen. Focus here to use the keyboard controls.'); ?>" hidden></canvas>
+    </div>
+    <div class="rge-player-toolbar">
+        <label class="rge-speed-label"><?php esc_html_e('Game speed'); ?>
+            <select class="rge-speed" aria-label="<?php esc_attr_e('Game speed'); ?>">
+                <option value="0.25">25%</option>
+                <option value="0.5">50%</option>
+                <option value="0.75">75%</option>
+                <option value="1" selected><?php esc_html_e('100% (Normal)'); ?></option>
+                <option value="1.25">125%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+            </select>
+        </label>
+        <span class="rge-fullscreen-feedback" role="status" aria-live="polite"></span>
+        <button type="button" class="rge-fullscreen" hidden aria-pressed="false" data-enter-label="<?php esc_attr_e('Fullscreen'); ?>" data-exit-label="<?php esc_attr_e('Exit fullscreen'); ?>" data-error-label="<?php esc_attr_e('Fullscreen could not start. Please try again.'); ?>"><?php esc_html_e('Fullscreen'); ?></button>
+    </div>
     </div>
     <div class="rge-status"><span class="rge-status-text" role="status" aria-live="polite"><?php esc_html_e('Waiting for a game'); ?></span><span>256 × 240 <span aria-hidden="true">/</span> NES</span></div>
     <div class="rge-controls">
