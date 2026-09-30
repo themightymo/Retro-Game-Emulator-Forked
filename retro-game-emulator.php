@@ -57,7 +57,8 @@ if (! class_exists('RetroGameEmulator')) {
 				add_options_page('Retro Game Emulator', 'Retro Game Emulator', 'manage_options', 'retro-game-emulator', array($this, 'optionsPage'));
 			});
 
-			add_action('admin_post_retro_game_upload_rom', array($this, 'handleOptions'));
+			add_action('admin_enqueue_scripts', array($this, 'enqueueMediaUploader'));
+			add_action('admin_init', array($this, 'prepareMediaUpload'));
 		}
 
 		/**
@@ -150,48 +151,88 @@ if (! class_exists('RetroGameEmulator')) {
 					$file = realpath($this->romsPath . $rom);
 					$dir = realpath($this->romsPath);
 					if ($file && $dir && dirname($file) === $dir && is_file($file)) {
-						wp_delete_file($file);
+						$attachment_id = attachment_url_to_postid($this->romsURL . $rom);
+						if ($attachment_id && current_user_can('delete_post', $attachment_id)) {
+							wp_delete_attachment($attachment_id, true);
+						} elseif (! $attachment_id) {
+							wp_delete_file($file);
+						}
 					}
 				}
+			}
+
+			$notice_key = 'retro_game_upload_' . get_current_user_id();
+			$notice = get_transient($notice_key);
+			if (is_array($notice)) {
+				delete_transient($notice_key);
+				add_settings_error('retro-game-emulator', 'rom-upload', $notice['message'], $notice['type']);
 			}
 
 			include plugin_dir_path(__FILE__) . 'options.php';
 		}
 
 
-		public function handleOptions()
+		public function enqueueMediaUploader($hook)
 		{
-			if (! current_user_can('manage_options')) {
-				wp_die(esc_html__('You do not have sufficient permissions to access this page.'), 403);
+			if ($hook !== 'settings_page_retro-game-emulator') {
+				return;
 			}
 
-			$nonce = isset($_POST['retro-game-emulator-nonce']) ? sanitize_text_field(wp_unslash($_POST['retro-game-emulator-nonce'])) : '';
+			add_filter('plupload_default_params', function ($params) {
+				$params['retro_game_upload_nonce'] = wp_create_nonce('retro-game-media-upload');
+				return $params;
+			});
+			add_filter('plupload_default_settings', function ($settings) {
+				$settings['filters']['mime_types'] = array(array('title' => __('NES ROMs'), 'extensions' => 'nes'));
+				return $settings;
+			});
+			wp_enqueue_media();
+			wp_enqueue_script('retro-game-emulator-admin', plugins_url('lib/admin.js', __FILE__), array('media-views'), '1.3.2', true);
+			wp_localize_script('retro-game-emulator-admin', 'retroGameMedia', array(
+				'title' => __('Upload NES ROMs'),
+				'button' => __('Done'),
+			));
+		}
 
-			if (wp_verify_nonce($nonce, 'retro-game-emulator-options')) {
-				add_filter('upload_dir', function ($param) {
-					$param['path'] = $param['basedir'] . '/retro-game-emulator/';
-					$param['url'] = $param['baseurl'] . '/retro-game-emulator';
-					return $param;
-				});
+		public function prepareMediaUpload()
+		{
+			if (! isset($_POST['retro_game_upload_nonce']) || ! isset($_REQUEST['action']) || $_REQUEST['action'] !== 'upload-attachment') {
+				return;
+			}
+			check_ajax_referer('retro-game-media-upload', 'retro_game_upload_nonce');
+			if (! current_user_can('manage_options') || ! current_user_can('upload_files')) {
+				wp_send_json_error(array('message' => __('You do not have permission to upload ROMs.')), 403);
+			}
 
-				add_filter('mime_types', function ($mimes) {
-					$mimes['nes'] = 'application/octet-stream';
-					return $mimes;
-				});
-
-				// Only accept .nes files.
-				if (isset($_FILES['rom_file']['name']) && $this->isRomFile(sanitize_file_name($_FILES['rom_file']['name']))) {
-					wp_handle_upload($_FILES['rom_file'], array(
-						'action' => 'retro_game_upload_rom',
-						'mimes' => array('nes' => 'application/octet-stream'),
-					));
+			add_filter('upload_mimes', function ($mimes) {
+				return array('nes' => 'application/octet-stream');
+			});
+			add_filter('wp_handle_upload_prefilter', function ($file) {
+				if (! $this->isRomFile($file['name'])) {
+					$file['error'] = __('Only .nes ROM files can be uploaded.');
+				} elseif (! $file['error'] && ! $this->hasRomHeader($file['tmp_name'])) {
+					$file['error'] = __('This file is not a valid NES ROM. Choose an uncompressed .nes file.');
 				}
+				return $file;
+			});
+			add_filter('wp_check_filetype_and_ext', function ($data, $file, $filename) {
+				if ($this->isRomFile($filename) && $this->hasRomHeader($file)) {
+					return array('ext' => 'nes', 'type' => 'application/octet-stream', 'proper_filename' => false);
+				}
+				return $data;
+			}, 10, 3);
+			add_filter('upload_dir', function ($dir) {
+				$dir['subdir'] = '/retro-game-emulator';
+				$dir['path'] = $dir['basedir'] . $dir['subdir'];
+				$dir['url'] = $dir['baseurl'] . $dir['subdir'];
+				return $dir;
+			});
+		}
 
-				wp_safe_redirect(admin_url('options-general.php?page=retro-game-emulator'));
-				exit;
-			}
-
-			wp_die(esc_html__('The link you followed has expired.'), 403);
+		public function hasRomHeader($file)
+		{
+			$header = is_readable($file) ? file_get_contents($file, false, null, 0, 16) : false;
+			return is_string($header) && strlen($header) === 16 && substr($header, 0, 4) === "NES\x1a";
 		}
 	}
 

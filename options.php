@@ -1,16 +1,12 @@
 <?php if (! defined('ABSPATH')) { exit; } ?>
 <div class="wrap">
 	<h2><span class="dashicons dashicons-format-image" style="font-size:38px;display:inline;vertical-align:middle;"></span> Retro Game Emulator</h2>
+	<?php settings_errors('retro-game-emulator'); ?>
 	<p>To insert the emulator in a post or page use the shortcode <code>[nes]</code></p>
 	<div class="card">
-		<h3><?php _e('Upload Rom'); ?></h3>
-		<p><?php printf(__('Use this form to upload roms.  Be sure they have an %s extension.'), '<code>.nes</code>'); ?></p>
-		<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" enctype="multipart/form-data">
-			<input name="rom_file" type="file" value="" />
-			<input type="hidden" name="action" value="retro_game_upload_rom" />
-			<?php wp_nonce_field('retro-game-emulator-options', 'retro-game-emulator-nonce'); ?>
-			<?php submit_button('Upload'); ?>
-		</form>
+		<h3><?php esc_html_e('Upload ROMs'); ?></h3>
+		<p><?php printf(esc_html__('Select or drag in multiple %s files in the WordPress media uploader. Uploaded ROMs are installed automatically; close the uploader to refresh the list.'), '<code>.nes</code>'); ?></p>
+		<button type="button" class="button button-primary" id="retro-game-upload-roms"><?php esc_html_e('Upload ROMs'); ?></button>
 	</div>
 
 	<h3><?php _e('Installed Roms'); ?></h3>
