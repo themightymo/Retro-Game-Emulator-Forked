@@ -95,6 +95,10 @@ if (! class_exists('RetroGameEmulator')) {
 
 		public function shortcode($atts)
 		{
+			if (current_user_can('manage_options') && current_user_can('upload_files')) {
+				$this->enqueueRomUploader();
+			}
+
 			$romsArray = array();
 
 			if (is_dir($this->romsPath)) {
@@ -178,6 +182,16 @@ if (! class_exists('RetroGameEmulator')) {
 				return;
 			}
 
+			$this->enqueueRomUploader();
+		}
+
+		public function enqueueRomUploader()
+		{
+			// Shortcodes and blocks can render more than once on the same page.
+			if (wp_script_is('retro-game-emulator-admin', 'enqueued')) {
+				return;
+			}
+
 			add_filter('plupload_default_params', function ($params) {
 				$params['retro_game_upload_nonce'] = wp_create_nonce('retro-game-media-upload');
 				return $params;
@@ -187,7 +201,7 @@ if (! class_exists('RetroGameEmulator')) {
 				return $settings;
 			});
 			wp_enqueue_media();
-			wp_enqueue_script('retro-game-emulator-admin', plugins_url('lib/admin.js', __FILE__), array('media-views'), '1.3.2', true);
+			wp_enqueue_script('retro-game-emulator-admin', plugins_url('lib/admin.js', __FILE__), array('media-views'), '1.3.3', true);
 			wp_localize_script('retro-game-emulator-admin', 'retroGameMedia', array(
 				'title' => __('Upload NES ROMs'),
 				'button' => __('Done'),

@@ -6,6 +6,12 @@
         <option value="<?php echo esc_url($rom['url']); ?>"><?php echo esc_html($rom['name']); ?></option>
     <?php endforeach; ?>
 </select>
+<?php if (current_user_can('manage_options') && current_user_can('upload_files')) : ?>
+    <p>
+        <button type="button" class="button retro-game-upload-roms"><?php esc_html_e('Upload ROMs'); ?></button>
+        <small style="display:block"><?php esc_html_e('Upload .nes files to add games to this site. Close the uploader to refresh the game list.'); ?></small>
+    </p>
+<?php endif; ?>
 <h3><?php echo esc_html__("Controls"); ?></h3>
 <table>
     <tr>
