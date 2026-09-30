@@ -1,61 +1,40 @@
 <?php if (! defined('ABSPATH')) { exit; } ?>
-<canvas id="retro-game-emulator-canvas" width="256" height="240" style="width: 100%;display:none;margin-bottom:10px"></canvas>
-<select id="retro-game-emulator-game-select" class="form-control">
-    <option>- Select Rom -</option>
-    <?php foreach ($romsArray as $rom) : ?>
-        <option value="<?php echo esc_url($rom['url']); ?>"><?php echo esc_html($rom['name']); ?></option>
-    <?php endforeach; ?>
-</select>
-<?php if (current_user_can('manage_options') && current_user_can('upload_files')) : ?>
-    <p>
-        <button type="button" class="button retro-game-upload-roms"><?php esc_html_e('Upload ROMs'); ?></button>
-        <small style="display:block"><?php esc_html_e('Upload .nes files to add games to this site. Close the uploader to refresh the game list.'); ?></small>
-    </p>
-<?php endif; ?>
-<h3><?php echo esc_html__("Controls"); ?></h3>
-<table>
-    <tr>
-        <th><?php echo esc_html__("Button"); ?></th>
-        <th><?php echo esc_html__("Player 1"); ?></th>
-        <th><?php echo esc_html__("Player 2"); ?></th>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("Left"); ?></td>
-        <td><?php echo esc_html__("Left"); ?></td>
-        <td><?php echo esc_html__("Num-4"); ?></td>
-    <tr>
-        <td><?php echo esc_html__("Right"); ?></td>
-        <td><?php echo esc_html__("Right"); ?></td>
-        <td><?php echo esc_html__("Num-6"); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("Up"); ?></td>
-        <td><?php echo esc_html__("Up"); ?></td>
-        <td><?php echo esc_html__("Num-8"); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("Down"); ?></td>
-        <td><?php echo esc_html__("Down"); ?></td>
-        <td><?php echo esc_html__("Num-2"); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("A"); ?></td>
-        <td><?php echo esc_html__("A"); ?></td>
-        <td><?php echo esc_html__("Num-7"); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("B"); ?></td>
-        <td><?php echo esc_html__("S"); ?></td>
-        <td><?php echo esc_html__("Num-9"); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("Start"); ?></td>
-        <td><?php echo esc_html__("Enter"); ?></td>
-        <td><?php echo esc_html__("Num-1"); ?></td>
-    </tr>
-    <tr>
-        <td><?php echo esc_html__("Select"); ?></td>
-        <td><?php echo esc_html__("Tab"); ?></td>
-        <td><?php echo esc_html__("Num-3"); ?></td>
-    </tr>
-</table>
+<section class="rge" aria-label="<?php esc_attr_e('NES game emulator'); ?>">
+    <header class="rge-header">
+        <div><span class="rge-eyebrow">THE ORIGINAL PLAY SESSION</span><h2><?php esc_html_e('Your pocket arcade.'); ?></h2><p><?php esc_html_e('Classic games. One more round.'); ?></p></div>
+        <span class="rge-badge"><span aria-hidden="true"></span> NES / 8-BIT</span>
+    </header>
+    <div class="rge-library">
+        <div class="rge-picker"><label for="retro-game-emulator-game-select"><?php esc_html_e('CHOOSE YOUR GAME'); ?></label>
+            <select id="retro-game-emulator-game-select">
+                <option value=""><?php esc_html_e('Select a ROM to start playing'); ?></option>
+                <?php foreach ($romsArray as $rom) : ?>
+                    <option value="<?php echo esc_url($rom['url']); ?>"><?php echo esc_html($rom['name']); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <?php if (current_user_can('manage_options') && current_user_can('upload_files')) : ?>
+            <button type="button" class="rge-upload retro-game-upload-roms"><?php esc_html_e('+ Upload ROMs'); ?></button>
+        <?php endif; ?>
+    </div>
+    <div class="rge-screen">
+        <div class="rge-empty">
+            <svg width="72" height="52" viewBox="0 0 72 52" fill="none" aria-hidden="true"><rect x="3" y="7" width="66" height="38" rx="12" stroke="currentColor" stroke-width="3"/><path d="M22 17v18M13 26h18" stroke="currentColor" stroke-width="4"/><circle cx="49" cy="29" r="4" fill="currentColor"/><circle cx="59" cy="21" r="4" fill="currentColor"/></svg>
+            <h3><?php esc_html_e('Ready, player one?'); ?></h3>
+            <p><?php echo empty($romsArray) ? esc_html__('Your arcade is waiting for its first game. Add a .nes ROM to get started.') : esc_html__('Choose a game above and pick up where nostalgia begins.'); ?></p>
+            <span class="rge-screen-note"><?php esc_html_e('A keyboard is your controller'); ?></span>
+        </div>
+        <canvas id="retro-game-emulator-canvas" width="256" height="240" tabindex="0" aria-label="<?php esc_attr_e('Game screen. Focus here to use the keyboard controls.'); ?>" hidden></canvas>
+    </div>
+    <div class="rge-status"><span class="rge-status-text" role="status" aria-live="polite"><?php esc_html_e('Waiting for a game'); ?></span><span>256 × 240 <span aria-hidden="true">/</span> NES</span></div>
+    <div class="rge-controls">
+        <div class="rge-controls-heading"><h3><?php esc_html_e('The controls'); ?></h3><span><?php esc_html_e('PLAYER 01'); ?></span></div>
+        <div class="rge-keys">
+            <div><span class="rge-key-group"><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></span><span><?php esc_html_e('Move'); ?></span></div>
+            <div><span class="rge-key-group"><kbd>A</kbd><kbd>S</kbd></span><span><?php esc_html_e('A / B buttons'); ?></span></div>
+            <div><kbd>Enter</kbd><span><?php esc_html_e('Start'); ?></span></div>
+            <div><kbd>Tab</kbd><span><?php esc_html_e('Select'); ?></span></div>
+        </div>
+        <p class="rge-tip"><?php esc_html_e('Click the game screen to play. Press Esc to release keyboard focus.'); ?></p>
+    </div>
+</section>
