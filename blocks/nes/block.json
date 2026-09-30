@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "retro-game-emulator/nes",
+	"title": "NES Emulator",
+	"category": "embed",
+	"icon": "games",
+	"description": "Embed an NES emulator with a picker for your uploaded roms.",
+	"keywords": ["nes", "nintendo", "emulator", "game", "retro"],
+	"textdomain": "jsnes",
+	"supports": {
+		"html": false,
+		"multiple": false,
+		"align": ["wide", "full"]
+	},
+	"editorScript": "file:./index.js"
+}
