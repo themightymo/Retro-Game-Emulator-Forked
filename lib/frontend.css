@@ -36,3 +36,13 @@
 .rge kbd { display: inline-block; min-width: 29px; padding: 5px 8px; border: 1px solid #4b594e; border-bottom-width: 3px; border-radius: 6px; background: #29332c; color: #e5edde; font: 12px/1.4 ui-monospace, monospace; text-align: center; }
 .rge .rge-tip { margin-top: 20px; font-size: 11px; }
 @media (max-width: 520px) { .rge .rge-header { flex-wrap: wrap; gap: 14px; } .rge-library { flex-wrap: wrap; } .rge-picker { flex-basis: 100%; } .rge-screen { min-height: 280px; } .rge-keys { display: grid; grid-template-columns: 1fr 1fr; } }
+
+.rge .rge-remap { padding: 0; border: 0; border-radius: 6px; background: transparent; color: inherit; cursor: pointer; }
+.rge .rge-remap kbd { cursor: inherit; }
+.rge .rge-remap:hover kbd, .rge .rge-remap[aria-pressed="true"] kbd { border-color: var(--rge-accent); background: #35472a; }
+.rge-key-group { flex-wrap: wrap; }
+.rge-controls-help { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-top: 16px; }
+.rge .rge-controls-help p { font-size: 11px; }
+.rge .rge-controls-reset { padding: 4px 0; border: 0; background: transparent; color: var(--rge-accent); font: 11px/1.5 system-ui, sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.rge .rge-controls-feedback { margin-top: 8px; color: var(--rge-accent); font-size: 11px; }
+.rge .rge-controls-feedback:empty { margin: 0; }

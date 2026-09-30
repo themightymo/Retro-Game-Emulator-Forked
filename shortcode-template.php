@@ -30,11 +30,16 @@
     <div class="rge-controls">
         <div class="rge-controls-heading"><h3><?php esc_html_e('The controls'); ?></h3><span><?php esc_html_e('PLAYER 01'); ?></span></div>
         <div class="rge-keys">
-            <div><span class="rge-key-group"><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></span><span><?php esc_html_e('Move'); ?></span></div>
-            <div><span class="rge-key-group"><kbd>A</kbd><kbd>S</kbd></span><span><?php esc_html_e('A / B buttons'); ?></span></div>
-            <div><kbd>Enter</kbd><span><?php esc_html_e('Start'); ?></span></div>
-            <div><kbd>Tab</kbd><span><?php esc_html_e('Select'); ?></span></div>
+            <div><span class="rge-key-group"><button type="button" class="rge-remap" data-remap="UP" aria-label="<?php esc_attr_e('Change Up key'); ?>" title="<?php esc_attr_e('Change Up key'); ?>" aria-pressed="false"><kbd data-control-keys="UP">↑</kbd></button><button type="button" class="rge-remap" data-remap="LEFT" aria-label="<?php esc_attr_e('Change Left key'); ?>" title="<?php esc_attr_e('Change Left key'); ?>" aria-pressed="false"><kbd data-control-keys="LEFT">←</kbd></button><button type="button" class="rge-remap" data-remap="DOWN" aria-label="<?php esc_attr_e('Change Down key'); ?>" title="<?php esc_attr_e('Change Down key'); ?>" aria-pressed="false"><kbd data-control-keys="DOWN">↓</kbd></button><button type="button" class="rge-remap" data-remap="RIGHT" aria-label="<?php esc_attr_e('Change Right key'); ?>" title="<?php esc_attr_e('Change Right key'); ?>" aria-pressed="false"><kbd data-control-keys="RIGHT">→</kbd></button></span><span><?php esc_html_e('Move'); ?></span></div>
+            <div><span class="rge-key-group"><button type="button" class="rge-remap" data-remap="A" aria-label="<?php esc_attr_e('Change A button key'); ?>" title="<?php esc_attr_e('Change A button key'); ?>" aria-pressed="false"><kbd data-control-keys="A">A</kbd></button><button type="button" class="rge-remap" data-remap="B" aria-label="<?php esc_attr_e('Change B button key'); ?>" title="<?php esc_attr_e('Change B button key'); ?>" aria-pressed="false"><kbd data-control-keys="B">S</kbd></button></span><span><?php esc_html_e('A / B buttons'); ?></span></div>
+            <div><button type="button" class="rge-remap" data-remap="START" aria-label="<?php esc_attr_e('Change Start key'); ?>" title="<?php esc_attr_e('Change Start key'); ?>" aria-pressed="false"><kbd data-control-keys="START">Enter</kbd></button><span><?php esc_html_e('Start'); ?></span></div>
+            <div><button type="button" class="rge-remap" data-remap="SELECT" aria-label="<?php esc_attr_e('Change Select key'); ?>" title="<?php esc_attr_e('Change Select key'); ?>" aria-pressed="false"><kbd data-control-keys="SELECT">Tab</kbd></button><span><?php esc_html_e('Select'); ?></span></div>
         </div>
+        <div class="rge-controls-help">
+            <p><?php esc_html_e('Click any key to change it. Press Esc to cancel. Saved in this browser.'); ?></p>
+            <button type="button" class="rge-controls-reset"><?php esc_html_e('Reset to defaults'); ?></button>
+        </div>
+        <p class="rge-controls-feedback" role="status" aria-live="polite"></p>
         <p class="rge-tip"><?php esc_html_e('Click the game screen to play. Press Esc to release keyboard focus.'); ?></p>
     </div>
 </section>
