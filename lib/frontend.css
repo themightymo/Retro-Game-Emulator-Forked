@@ -50,8 +50,8 @@
 .rge-player-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 10px 2px; }
 .rge-player-toolbar[hidden] { display: none; }
 .rge-fullscreen-feedback { color: #a6b1aa; font-size: 12px; }
-.rge .rge-fullscreen { flex-shrink: 0; padding: 8px 14px; border: 1px solid #47534b; border-radius: 8px; background: #242c27; color: #f3f5ef; font: 600 12px/1.5 system-ui, sans-serif; cursor: pointer; }
-.rge .rge-fullscreen:hover { border-color: var(--rge-accent); }
+.rge .rge-fullscreen, .rge .rge-speed-check { flex-shrink: 0; padding: 8px 14px; border: 1px solid #47534b; border-radius: 8px; background: #242c27; color: #f3f5ef; font: 600 12px/1.5 system-ui, sans-serif; cursor: pointer; }
+.rge .rge-fullscreen:hover, .rge .rge-speed-check:hover { border-color: var(--rge-accent); }
 .rge-player:fullscreen { display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; background: #000; }
 .rge-player:fullscreen .rge-screen { flex: 1; min-width: 0; min-height: 0; width: 100%; aspect-ratio: auto; grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); padding: 0; border: 0; border-radius: 0; background: #000; }
 /* Contain the native 256 × 240 picture without stretching or cropping. */
@@ -60,5 +60,10 @@
 
 .rge-player-toolbar { flex-wrap: wrap; }
 .rge-speed-label { display: flex; align-items: center; gap: 10px; margin-right: auto; color: #a6b1aa; font-size: 12px; }
-.rge .rge-speed { width: auto; padding: 8px 10px; border: 1px solid #47534b; border-radius: 8px; background: #242c27; color: #f3f5ef; font: 12px/1.5 system-ui, sans-serif; }
+.rge .rge-speed { width: 78px; padding: 8px 10px; border: 1px solid #47534b; border-radius: 8px; background: #242c27; color: #f3f5ef; font: 12px/1.5 system-ui, sans-serif; }
 .rge .rge-fullscreen[hidden] { display: none; }
+
+.rge .rge-speed-check:disabled { opacity: .65; cursor: wait; }
+.rge .rge-speed-result { padding: 0 2px 12px; color: #cbd6cd; font-size: 12px; }
+.rge .rge-speed-result:empty { display: none; }
+.rge-player:fullscreen .rge-speed-result { flex-shrink: 0; max-height: 25vh; overflow-y: auto; padding: 0 16px 12px; }

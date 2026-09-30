@@ -29,19 +29,13 @@
     </div>
     <div class="rge-player-toolbar">
         <label class="rge-speed-label"><?php esc_html_e('Game speed'); ?>
-            <select class="rge-speed" aria-label="<?php esc_attr_e('Game speed'); ?>">
-                <option value="0.25">25%</option>
-                <option value="0.5">50%</option>
-                <option value="0.75">75%</option>
-                <option value="1" selected><?php esc_html_e('100% (Normal)'); ?></option>
-                <option value="1.25">125%</option>
-                <option value="1.5">150%</option>
-                <option value="2">200%</option>
-            </select>
+            <input class="rge-speed" type="number" min="25" max="200" step="1" value="100" aria-label="<?php esc_attr_e('Game speed percentage'); ?>"> <span>%</span>
         </label>
+        <button type="button" class="rge-speed-check"><?php esc_html_e('Check game speed'); ?></button>
         <span class="rge-fullscreen-feedback" role="status" aria-live="polite"></span>
         <button type="button" class="rge-fullscreen" hidden aria-pressed="false" data-enter-label="<?php esc_attr_e('Fullscreen'); ?>" data-exit-label="<?php esc_attr_e('Exit fullscreen'); ?>" data-error-label="<?php esc_attr_e('Fullscreen could not start. Please try again.'); ?>"><?php esc_html_e('Fullscreen'); ?></button>
     </div>
+    <p class="rge-speed-result" role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
     <div class="rge-status"><span class="rge-status-text" role="status" aria-live="polite"><?php esc_html_e('Waiting for a game'); ?></span><span>256 × 240 <span aria-hidden="true">/</span> NES</span></div>
     <div class="rge-controls">

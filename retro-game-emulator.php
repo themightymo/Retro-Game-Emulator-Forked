@@ -36,9 +36,9 @@ if (! class_exists('RetroGameEmulator')) {
 			$this->romsURL = $uploads_dir['baseurl'] . $this->romsFolder;
 
 			add_action('wp_enqueue_scripts', function () {
-				wp_enqueue_style('retro-game-emulator', plugins_url('lib/frontend.css', __FILE__), array(), '1.4.4');
+				wp_enqueue_style('retro-game-emulator', plugins_url('lib/frontend.css', __FILE__), array(), '1.4.6');
 				wp_enqueue_script('jsnes', plugins_url('lib/jsnes.min.js', __FILE__), [], '1.2.0');
-				wp_enqueue_script('retro-game-emulator-app', plugins_url('lib/app.js', __FILE__), array('jsnes'), '1.4.4');
+				wp_enqueue_script('retro-game-emulator-app', plugins_url('lib/app.js', __FILE__), array('jsnes'), '1.4.6');
 			});
 
 			add_action('wp_head', array($this, 'head'));
