@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- Edit this file, not index.html. tools/build-standalone.cjs fills {{player}} from
+     shortcode-template.php and {{hash:path}} with a content hash for cache busting. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retro Game Emulator</title>
+<meta name="description" content="Play your own NES ROMs in the browser. Games you open are kept in this browser only.">
+<link rel="stylesheet" href="../lib/frontend.css?v={{hash:lib/frontend.css}}">
+<style>
+	html { background: #0c100e; }
+	body { margin: 0; padding: 0 16px; background: #0c100e; }
+	main { max-width: 960px; margin: 0 auto; }
+	.rge .rge-remove { min-height: 48px; padding: 10px 16px; border: 1px solid #47534b; border-radius: 10px; background: #242c27; color: #f3f5ef; font: 600 13px/1.4 system-ui, sans-serif; cursor: pointer; white-space: nowrap; }
+	.rge .rge-remove:hover:not(:disabled) { border-color: var(--rge-accent); }
+	.rge .rge-remove:disabled { opacity: .5; cursor: default; }
+	.rge .rge-library-note { margin: -8px 0 20px; color: var(--rge-accent); font-size: 12px; }
+	.rge .rge-library-note:empty { display: none; }
+	.rge.rge-dragging { outline: 3px dashed var(--rge-accent); outline-offset: -12px; }
+	.rge-file { display: none; }
+</style>
+</head>
+<body>
+<main>
+{{player}}
+</main>
+<script src="../lib/jsnes.min.js?v={{hash:lib/jsnes.min.js}}"></script>
+<script src="../lib/app.js?v={{hash:lib/app.js}}"></script>
+<script src="standalone.js?v={{hash:standalone/standalone.js}}"></script>
+</body>
+</html>

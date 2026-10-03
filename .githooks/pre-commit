@@ -1,0 +1,9 @@
+#!/bin/sh
+# Regenerates standalone/index.html so it always matches the plugin's player markup
+# and the current lib/ files, and adds it to the commit.
+if ! command -v node >/dev/null 2>&1; then
+	echo "pre-commit: Node.js not found; skipped rebuilding standalone/index.html." >&2
+	exit 0
+fi
+node tools/build-standalone.cjs || exit 1
+git add standalone/index.html

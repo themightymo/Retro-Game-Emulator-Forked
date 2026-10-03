@@ -100,6 +100,15 @@ The settings page shows the actual path for your site. The frontend and block us
 
 Use **Settings → Retro Game Emulator → Installed Roms → Delete** to remove a game. Uploads follow the site's normal upload-size limits; ZIP archives are not supported. ROMs are served from public uploads URLs, so only upload files you have permission to share.
 
+## Standalone page (no WordPress)
+
+`standalone/index.html` runs the same player without WordPress, using the shared `lib/` files. Open it from any static host (or `python3 -m http.server` in the repository root, then visit `/standalone/`); double-clicking the file also works in current browsers.
+
+- **Open ROMs** or drag `.nes` files onto the page. The first file starts playing immediately; files without an NES header are rejected.
+- Opened games are stored in this browser's IndexedDB and appear in the game selector on later visits. **Remove** deletes the selected game from the browser. Nothing is uploaded anywhere.
+- If the browser cannot store games (for example, some private windows), they stay available until the page is closed.
+- If a dropped game starts silently, click the game screen to start audio.
+
 ## Current limitations and troubleshooting
 
 - **One emulator per page:** the block prevents multiple instances; use only one `[nes]` shortcode per page as well.
@@ -139,6 +148,22 @@ The PHP and JavaScript sources run directly; there is no build step. Main files:
 - `lib/app.js`: emulation loop, audio, keyboard controls, fullscreen, and speed tools.
 - `lib/admin.js` and `options.php`: media uploader and settings interface.
 - `blocks/nes/`: block metadata and editor integration.
+- `standalone/`: the WordPress-free page and its IndexedDB ROM library (`standalone.js`), which plays files through `lib/app.js`'s `rge:load-file` event.
+
+`standalone/index.html` is generated; don't edit it directly. `tools/build-standalone.cjs` builds it from the player markup in `shortcode-template.php` plus the page shell in `standalone/page-template.html`, and stamps the `lib/` and `standalone.js` URLs with content hashes so browsers pick up new versions. A pre-commit hook regenerates and stages it on every commit. Enable the hook once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
+
+To rebuild or check by hand:
+
+```sh
+node tools/build-standalone.cjs          # regenerate standalone/index.html
+node tools/build-standalone.cjs --check  # exit 1 if it is out of date
+```
+
+If the build stops with "could not find…" or "unsupported PHP", the template changed in a way the generator doesn't translate yet; update the matching rule in `tools/build-standalone.cjs`.
 
 Run the existing speed-analysis regression checks with Node.js:
 
