@@ -4,16 +4,16 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../lib/app.js'), 'utf8');
 const analysis = source.slice(source.indexOf('\tvar emulatedFrames ='), source.indexOf('\tfunction validSpeed'));
-const reset = source.slice(source.indexOf('\tfunction resetTiming()'), source.indexOf("\tdocument.addEventListener('visibilitychange'"));
-const scheduler = source.slice(source.indexOf('\tfunction onAnimationFrame('), source.indexOf('\n\tfunction audio_remain'));
+const reset = source.slice(source.indexOf('\tfunction resetAudio()'), source.indexOf("\tdocument.addEventListener('visibilitychange'"));
+const scheduler = source.slice(source.indexOf('\tfunction onAnimationFrame('), source.indexOf('\n\tfunction flushAudio'));
 function setup(speed = 1) {
  const button = {textContent: 'Check game speed', addEventListener(type, handler) { this[type] = handler; }};
  const result = {textContent: ''};
  const context = {speed, playing: true, document: {hidden: false}, lastFrameTime: null, frameBudget: 0,
-  audio_write_cursor: 0, audio_read_cursor: 0, audio_fraction: 0,
+  FRAME_RATE: 60, audio_batch_len: 0, audio_out: null, flushAudio() {},
   panel: {querySelector: selector => selector === '.rge-speed-check' ? button : result},
   canvas: {focus() {}}, window: {requestAnimationFrame() {}},
-  nes: {opts: {preferredFrameRate: 60}, frame() {}},
+  nes: {opts: {sampleRate: 48000}, frame() {}},
   image: {data: {set() {}}}, framebuffer_u8: [], canvas_ctx: {putImageData() {}}};
  vm.createContext(context);
  vm.runInContext(analysis + reset + scheduler, context);

@@ -1,6 +1,6 @@
 # Retro Game Emulator Forked
 
-Turn a WordPress post or page into a browser-based NES arcade. This fork of [Retro Game Emulator](https://wordpress.org/plugins/retro-game-emulator/) uses the bundled JSNES emulator and adds a block editor integration, ROM uploads, customizable keyboard controls, fullscreen play, and game-speed tools.
+Turn a WordPress post or page into a browser-based NES arcade. This fork of [Retro Game Emulator](https://wordpress.org/plugins/retro-game-emulator/) uses the bundled JSNES 2.1 emulator and adds a block editor integration, ROM uploads, customizable keyboard controls, fullscreen play, and game-speed tools.
 
 No ROMs are included. Add your own uncompressed `.nes` files to populate the game selector.
 
@@ -8,7 +8,7 @@ No ROMs are included. Add your own uncompressed `.nes` files to populate the gam
 
 ### Playing games
 
-- **NES emulation with audio:** play in a browser with a pixelated 256 × 240 game display.
+- **NES emulation with audio:** play in a browser with a pixelated 256 × 240 game display. Audio renders off the main thread through an AudioWorklet, falling back to the older ScriptProcessor API on pages that are not served over HTTPS or whose security policy blocks `blob:` scripts.
 - **Shared game library:** visitors choose from the ROMs installed on your site without needing a WordPress account.
 - **Arcade interface:** dark styling, a game selector, control guide, and waiting, loading, now-playing, and error messages. The layout adapts to available space.
 - **Fullscreen:** expand the player and its speed toolbar in supported browsers while preserving the game's aspect ratio.
@@ -106,7 +106,7 @@ Use **Settings → Retro Game Emulator → Installed Roms → Delete** to remove
 - **Keyboard-only, player one:** touch controls, gamepads, and a second controller are not implemented.
 - **No saved game progress:** saved controls and speed preferences are not save states or cartridge battery saves. Reloading the page or selecting a game starts a fresh session.
 - **No dedicated pause, restart, mute, or volume controls:** hiding the tab suspends emulation; leaving keyboard focus alone does not pause the game.
-- **ROM does not load:** use an uncompressed `.nes` file and check that its uploads URL is accessible. A valid header does not imply JSNES mapper compatibility. Network failures and load errors appear in the status line.
+- **ROM does not load:** use an uncompressed `.nes` file and check that its uploads URL is accessible. A valid header does not imply JSNES mapper compatibility; if a game needs an unsupported cartridge mapper, the status line names it. Network failures, load errors, and games that crash during play also appear in the status line.
 - **No upload button:** sign in with an account that has both required capabilities. Visitors can play but cannot upload.
 - **No audio:** select the game again to retry audio initialization and check the browser's audio permissions and system volume.
 - **No fullscreen button:** the browser or embedding context may not expose the required Fullscreen API.
@@ -126,9 +126,9 @@ These are brainstormed possibilities, not implemented features or release commit
 | Embedding | Per-block default game, curated game lists, and optional selector hiding | Let each page feature a particular game or collection. |
 | Multiple players | Independent emulator instances with scoped input and audio | Safely support more than one embed per page. |
 | Presentation | Theme colors, compact layout, and configurable control hints | Fit the player into more WordPress designs. |
-| Compatibility | Clearer unsupported-mapper errors and a tested ROM/browser matrix | Make failures easier to understand and reproduce. |
+| Compatibility | A tested ROM/browser matrix | Make failures easier to understand and reproduce. |
 | Accessibility | Broader keyboard and screen-reader testing, translated UI strings | Improve access to setup, controls, and feedback. |
-| Maintenance | Load assets only where needed, modernize audio output, and expand integration tests | Reduce page overhead and catch regressions. |
+| Maintenance | Load assets only where needed and expand integration tests | Reduce page overhead and catch regressions. |
 
 ## Development
 
@@ -150,4 +150,4 @@ These cover simulated refresh-rate/speed combinations, slowdowns, uneven playbac
 
 ## Credits and license
 
-Based on **Retro Game Emulator** by grimmdude, powered by **JSNES** by bfirsh and contributors. The plugin declares **GPLv2 or later**; see the bundled [LICENSE](LICENSE) for license text.
+Based on **Retro Game Emulator** by grimmdude, powered by **JSNES** 2.1.0 (Apache-2.0) by bfirsh and contributors. The plugin declares **GPLv2 or later**; see the bundled [LICENSE](LICENSE) for license text.
