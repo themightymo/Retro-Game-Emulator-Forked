@@ -4,6 +4,8 @@ Turn a WordPress post or page into a browser-based NES arcade. This fork of [Ret
 
 No ROMs are included. Add your own uncompressed `.nes` files to populate the game selector.
 
+**Play in your browser, no WordPress needed:** [https://themightymo.github.io/Retro-Game-Emulator-Forked/standalone/](https://themightymo.github.io/Retro-Game-Emulator-Forked/standalone/) — open a `.nes` file from your computer and play. Games stay in your browser; nothing is uploaded. See [Standalone page](#standalone-page-no-wordpress).
+
 ## Features
 
 ### Playing games
@@ -102,7 +104,7 @@ Use **Settings → Retro Game Emulator → Installed Roms → Delete** to remove
 
 ## Standalone page (no WordPress)
 
-`standalone/index.html` runs the same player without WordPress, using the shared `lib/` files. Open it from any static host (or `python3 -m http.server` in the repository root, then visit `/standalone/`); double-clicking the file also works in current browsers.
+`standalone/index.html` runs the same player without WordPress, using the shared `lib/` files. The hosted copy is at [https://themightymo.github.io/Retro-Game-Emulator-Forked/standalone/](https://themightymo.github.io/Retro-Game-Emulator-Forked/standalone/), served by GitHub Pages from the `main` branch (**Settings → Pages → Deploy from a branch → `main` / `/ (root)`**), so it updates whenever `main` changes. You can also open it from any static host (or `python3 -m http.server` in the repository root, then visit `/standalone/`); double-clicking the file also works in current browsers.
 
 - **Open ROMs** or drag `.nes` files onto the page. The first file starts playing immediately; files without an NES header are rejected.
 - Opened games are stored in this browser's IndexedDB and appear in the game selector on later visits. **Remove** deletes the selected game from the browser. Nothing is uploaded anywhere.
